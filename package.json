@@ -1,0 +1,58 @@
+{
+  "name": "ngx-dexie",
+  "version": "1.0.0",
+  "description": "Dexie module for Angular 2.0+",
+  "main": "index.js",
+  "module": "index.js",
+  "jsnext:main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dexie": "^2.0.0-beta.11"
+  },
+  "devDependencies": {
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/language-service": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
+    "@angular/platform-browser-dynamic": "^4.0.0",
+    "@types/jasmine": "2.5.45",
+    "@types/node": "~6.0.60",
+    "codelyzer": "~3.0.1",
+    "core-js": "^2.4.1",
+    "es6-shim": "^0.35.3",
+    "jasmine-core": "~2.6.2",
+    "jasmine-spec-reporter": "~4.1.0",
+    "karma": "~1.7.0",
+    "karma-chrome-launcher": "~2.1.1",
+    "karma-cli": "~1.0.1",
+    "karma-jasmine": "~1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-coverage-istanbul-reporter": "^1.2.1",
+    "protractor": "~5.1.2",
+    "reflect-metadata": "^0.1.10",
+    "rxjs": "^5.1.0",
+    "ts-helpers": "^1.1.1",
+    "ts-node": "~3.0.4",
+    "tslint": "~5.3.2",
+    "typescript": "~2.3.3",
+    "zone.js": "^0.8.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dart-wakar/ngx-dexie.git"
+  },
+  "keywords": [
+    "Angular",
+    "Dexie",
+    "ng-dexie"
+  ],
+  "author": "Wakar Khan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dart-wakar/ngx-dexie/issues"
+  },
+  "homepage": "https://github.com/dart-wakar/ngx-dexie#readme"
+}
