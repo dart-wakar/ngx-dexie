@@ -9,11 +9,12 @@ export class DexieDatabase extends Dexie {
 
     constructor(@Inject(DEXIE_CONFIG_TOKEN) config: DexieConfig) {
         const databaseName: string = config.databaseName;
+        const databaseVersion: number = config.databaseVersion || 1;
         const schema: any = config.schema;
 
         super(databaseName);
 
-        this.version(1).stores(schema);
+        this.version(databaseVersion).stores(schema);
     }
 
 }
