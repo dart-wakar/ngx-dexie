@@ -9,7 +9,7 @@ import { DexieDatabase } from './dexie.database';
 @Injectable()
 export class DexieService<T extends object = any> {
     
-    constructor(private db: DexieDatabase) {}
+    constructor(protected db: DexieDatabase) {}
 
     /**
      * Adds the entry ```object``` to the dexie table ```table```.
