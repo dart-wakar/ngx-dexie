@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { from, bindCallback, Observable, merge, of } from 'rxjs';
+import { from, Observable, merge, of, fromEventPattern } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { Dexie } from 'dexie';
 
@@ -235,8 +235,8 @@ export class DexieService<T extends object = any> {
      * @param table table name or empty to listen to all tables
      */
     onChanges<TKey extends keyof T>(table?: TKey): Observable<DatabaseChange<T[TKey]>[]> {
-        return bindCallback(this.db.on)('changes').pipe(
-            map(data => data[0]),
+        return fromEventPattern(handler => this.db.on('changes', handler)).pipe(
+            map((data: any[]) => data[0]),
             map((changes: DatabaseChange<T[TKey]>[]) => changes.filter(x => !table || x.table === table))
         );
     }
