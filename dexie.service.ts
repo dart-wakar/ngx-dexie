@@ -57,7 +57,7 @@ export class DexieService<T extends object = any> {
     /**
      * Works similar to Dexie ```bulkPut()```
      * 
-     * @param table 
+     * @param table table name
      * @param objects 
      * @param keys 
      */
@@ -70,8 +70,9 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```delete()```
      * 
-     * @param table 
+     * @param table table name
      * @param primaryKey 
      */
     deleteOne<TKey extends keyof T>(table: TKey, primaryKey: any) {
@@ -79,8 +80,9 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```bulkDelete()```
      * 
-     * @param table 
+     * @param table table name
      * @param primaryKeys 
      */
     deleteMultiple<TKey extends keyof T>(table: TKey, primaryKeys: any[]) {
@@ -88,8 +90,9 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```clear()```
      * 
-     * @param table 
+     * @param table table name
      */
     clearAll<TKey extends keyof T>(table: TKey) {
         return from(this.db.table(String(table)).clear());
@@ -97,8 +100,9 @@ export class DexieService<T extends object = any> {
 
     // check
     /**
+     * Works similar to Dexie ```each()```
      * 
-     * @param table 
+     * @param table table name
      * @param callback 
      */
     operateOnEach<TKey extends keyof T>(table: TKey, callback: (item: T[TKey], idbCursor: any) => any) {
@@ -106,8 +110,9 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```filter()```
      * 
-     * @param table 
+     * @param table table name
      * @param filterFunction 
      */
     filter<TKey extends keyof T>(table: TKey, filterFunction: (value: T[TKey]) => boolean) {
@@ -116,8 +121,9 @@ export class DexieService<T extends object = any> {
 
     // check
     /**
+     * Works similar to Dexie ```get()```
      * 
-     * @param table 
+     * @param table table name
      * @param primaryKey 
      * @param callback 
      */
@@ -131,8 +137,9 @@ export class DexieService<T extends object = any> {
 
     // check
     /**
+     * Works similar to Dexie ```get()```
      * 
-     * @param table 
+     * @param table table name
      * @param keyValueMap 
      * @param callback 
      */
@@ -145,8 +152,9 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```limit()```
      * 
-     * @param table 
+     * @param table table name
      * @param num 
      */
     getFirstNItemsOfTable<TKey extends keyof T>(table: TKey, num: number) {
@@ -154,8 +162,9 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```orderBy()```
      * 
-     * @param table 
+     * @param table table name
      * @param index 
      */
     orderBy<TKey extends keyof T>(table: TKey, index: string) {
@@ -163,8 +172,9 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```offset()```
      * 
-     * @param table 
+     * @param table table name
      * @param ignoreUpto 
      */
     offset<TKey extends keyof T>(table: TKey, ignoreUpto: number) {
@@ -172,16 +182,18 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```reverse()```
      * 
-     * @param table 
+     * @param table table name
      */
     reverse<TKey extends keyof T>(table: TKey) {
         return this.db.table(String(table)).reverse() as Dexie.Collection<T[TKey], TKey>;
     }
 
     /**
+     * Works similar to Dexie ```toArray()```
      * 
-     * @param table 
+     * @param table table name
      * @param callback 
      */
     toArray<TKey extends keyof T>(table: TKey, callback?: (objects: T[TKey][]) => any) {
@@ -193,8 +205,9 @@ export class DexieService<T extends object = any> {
     }
 
     /**
+     * Works similar to Dexie ```toCollection()```
      * 
-     * @param table 
+     * @param table table name
      */
     toCollection<TKey extends keyof T>(table: TKey) {
         return this.db.table(String(table)).toCollection() as Dexie.Collection<T[TKey], TKey>;
@@ -202,8 +215,9 @@ export class DexieService<T extends object = any> {
 
     // check
     /**
+     * Works similar to Dexie ```update()```
      * 
-     * @param table 
+     * @param table table name
      * @param key 
      * @param changes 
      */
