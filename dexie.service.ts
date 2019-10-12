@@ -1,105 +1,214 @@
 import { Injectable } from '@angular/core';
 import { DexieDatabase } from './dexie.database';
+import { Dexie } from 'dexie';
+import { from } from 'rxjs';
 
 @Injectable()
-export class DexieService {
+export class DexieService<T extends object = any> {
     
     constructor(private db: DexieDatabase) {}
 
-    addOne(table: string,object: Object) {
-        return this.db.table(table).add(object);
+    /**
+     * Adds the entry ```object``` to the dexie table ```table```.
+     * Returns a promise which when resolved gives the key of the object added, when rejected gives the error that occured.
+     * 
+     * @param table table name
+     * @param object object to add
+     */
+    addOne<TKey extends keyof T>(table: TKey, object: T[TKey]) {
+        return from(this.db.table(String(table)).add(object));
     }
 
-    addMultiple(table: string,objects: Object[]) {
-        return this.db.table(table).bulkAdd(objects);
+    /**
+     * Adds multiple ```objects``` to the dexie table ```table```
+     * Returns a promise which works similar to Dexie ```bulkAdd()```
+     * 
+     * @param table table name
+     * @param objects objects to add
+     */
+    addMultiple<TKey extends keyof T>(table: TKey, objects: T[TKey][]) {
+        return from(this.db.table(String(table)).bulkAdd(objects));
     }
 
-    count(table: string) {
-        return this.db.table(table).count();
+    /**
+     * Returns a promise which when resolved gives the number of objects in the table ```table```
+     * 
+     * @param table table name
+     */
+    count<TKey extends keyof T>(table: TKey) {
+        return from(this.db.table(String(table)).count());
     }
 
-    addOrUpdateOne(table: string,object: Object,key?: any) {
+    /**
+     * Works similar to Dexie ```put()```
+     * 
+     * @param table table name
+     * @param object 
+     * @param key 
+     */
+    addOrUpdateOne<TKey extends keyof T>(table: TKey, object: T[TKey], key?: any) {
         if(key) {
-            return this.db.table(table).put(object,key);
+            return from(this.db.table(String(table)).put(object, key));
         } else {
-            return this.db.table(table).put(object);
+            return from(this.db.table(String(table)).put(object));
         }
     }
 
-    addOrUpdateMultiple(table: string,objects: Object[],keys?: any) {
+    /**
+     * Works similar to Dexie ```bulkPut()```
+     * 
+     * @param table 
+     * @param objects 
+     * @param keys 
+     */
+    addOrUpdateMultiple<TKey extends keyof T>(table: TKey, objects: T[TKey][], keys?: any) {
         if(keys) {
-            return this.db.table(table).bulkPut(objects,keys);
+            return from(this.db.table(String(table)).bulkPut(objects, keys));
         } else {
-            return this.db.table(table).bulkPut(objects);
+            return from(this.db.table(String(table)).bulkPut(objects));
         }
     }
 
-    deleteOne(table: string,primaryKey: any) {
-        return this.db.table(table).delete(primaryKey);
+    /**
+     * 
+     * @param table 
+     * @param primaryKey 
+     */
+    deleteOne<TKey extends keyof T>(table: TKey, primaryKey: any) {
+        return from(this.db.table(String(table)).delete(primaryKey));
     }
 
-    deleteMultiple(table: string,primaryKeys: any[]) {
-        return this.db.table(table).bulkDelete(primaryKeys);
+    /**
+     * 
+     * @param table 
+     * @param primaryKeys 
+     */
+    deleteMultiple<TKey extends keyof T>(table: TKey, primaryKeys: any[]) {
+        return from(this.db.table(String(table)).bulkDelete(primaryKeys));
     }
 
-    clearAll(table: string) {
-        return this.db.table(table).clear();
+    /**
+     * 
+     * @param table 
+     */
+    clearAll<TKey extends keyof T>(table: TKey) {
+        return from(this.db.table(String(table)).clear());
     }
 
-    operateOnEach(table: string,callback: (item: any,idbCursor: any) => any) {
-        return this.db.table(table).each(callback);
+    // check
+    /**
+     * 
+     * @param table 
+     * @param callback 
+     */
+    operateOnEach<TKey extends keyof T>(table: TKey, callback: (item: T[TKey], idbCursor: any) => any) {
+        return from(this.db.table(String(table)).each(callback));
     }
 
-    filter(table: string,filterFunction: (value: any) => boolean) {
-        return this.db.table(table).filter(filterFunction);
+    /**
+     * 
+     * @param table 
+     * @param filterFunction 
+     */
+    filter<TKey extends keyof T>(table: TKey, filterFunction: (value: T[TKey]) => boolean) {
+        return this.db.table(String(table)).filter(filterFunction) as Dexie.Collection<T[TKey], TKey>;
     }
 
-    getByPrimaryKey(table: string,primaryKey: any,callback?: (item: Object) => any) {
+    // check
+    /**
+     * 
+     * @param table 
+     * @param primaryKey 
+     * @param callback 
+     */
+    getByPrimaryKey<TKey extends keyof T>(table: TKey, primaryKey: any, callback?: (item: T[TKey]) => any) {
         if(callback) {
-            return this.db.table(table).get(primaryKey,callback);
+            return from(this.db.table(String(table)).get(primaryKey, callback));
         } else {
-            return this.db.table(table).get(primaryKey);
+            return from(this.db.table(String(table)).get(primaryKey));
         }
     }
 
-    getByKeyToValueMap(table: string,keyValueMap: Object,callback?: (item: Object) => any) {
+    // check
+    /**
+     * 
+     * @param table 
+     * @param keyValueMap 
+     * @param callback 
+     */
+    getByKeyToValueMap<TKey extends keyof T>(table: TKey, keyValueMap: Object, callback?: (item: T[TKey]) => any) {
         if(callback) {
-            return this.db.table(table).get(keyValueMap,callback);
+            return from(this.db.table(String(table)).get(keyValueMap, callback));
         } else {
-            return this.db.table(table).get(keyValueMap);
+            return from(this.db.table(String(table)).get(keyValueMap));
         }
     }
 
-    getFirstNItemsOfTable(table: string,num: number) {
-        return this.db.table(table).limit(num);
+    /**
+     * 
+     * @param table 
+     * @param num 
+     */
+    getFirstNItemsOfTable<TKey extends keyof T>(table: TKey, num: number) {
+        return this.db.table(String(table)).limit(num) as Dexie.Collection<T[TKey], TKey>;
     }
 
-    orderBy(table: string,index: string) {
-        return this.db.table(table).orderBy(index);
+    /**
+     * 
+     * @param table 
+     * @param index 
+     */
+    orderBy<TKey extends keyof T>(table: TKey, index: string) {
+        return this.db.table(String(table)).orderBy(index) as Dexie.Collection<T[TKey], TKey>;
     }
 
-    offset(table: string,ignoreUpto: number) {
-        return this.db.table(table).offset(ignoreUpto);
+    /**
+     * 
+     * @param table 
+     * @param ignoreUpto 
+     */
+    offset<TKey extends keyof T>(table: TKey, ignoreUpto: number) {
+        return this.db.table(String(table)).offset(ignoreUpto) as Dexie.Collection<T[TKey], TKey>;
     }
 
-    reverse(table: string) {
-        return this.db.table(table).reverse();
+    /**
+     * 
+     * @param table 
+     */
+    reverse<TKey extends keyof T>(table: TKey) {
+        return this.db.table(String(table)).reverse() as Dexie.Collection<T[TKey], TKey>;
     }
 
-    toArray(table: string,callback?: (objects: Object[]) => any) {
+    /**
+     * 
+     * @param table 
+     * @param callback 
+     */
+    toArray<TKey extends keyof T>(table: TKey, callback?: (objects: T[TKey][]) => any) {
         if(callback) {
-            return this.db.table(table).toArray(callback);
+            return from(this.db.table(String(table)).toArray(callback));
         } else {
-            return this.db.table(table).toArray();
+            return from(this.db.table(String(table)).toArray());
         }
     }
 
-    toCollection(table: string) {
-        return this.db.table(table).toCollection();
+    /**
+     * 
+     * @param table 
+     */
+    toCollection<TKey extends keyof T>(table: TKey) {
+        return this.db.table(String(table)).toCollection() as Dexie.Collection<T[TKey], TKey>;
     }
 
-    update(table: string,key: any,changes: Object) {
-        return this.db.table(table).update(key,changes);
+    // check
+    /**
+     * 
+     * @param table 
+     * @param key 
+     * @param changes 
+     */
+    update<TKey extends keyof T>(table: TKey, key: any, changes: T[TKey]) {
+        return from(this.db.table(String(table)).update(key, changes));
     }
 
 }

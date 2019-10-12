@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "dexie": "^2.0.4"
+    "dexie": "^2.0.4",
+    "dexie-observable": "^1.0.0-beta.5"
   },
   "devDependencies": {
     "@angular/common": "^8.2.10",

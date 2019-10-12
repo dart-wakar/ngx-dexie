@@ -17,7 +17,7 @@ export class DexieModule {
         return {
             ngModule: DexieModule,
             providers: [
-                {provide: DEXIE_CONFIG_TOKEN,useValue: config},
+                { provide: DEXIE_CONFIG_TOKEN, useValue: config },
                 {
                     provide: DexieDatabase,
                     useFactory: DexieFactory,
