@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { from, bindCallback, Observable } from 'rxjs';
-import { map, mergeMap, startWith } from 'rxjs/operators';
+import { from, bindCallback, Observable, merge, of } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { Dexie } from 'dexie';
 
 import { DatabaseChange } from './dexie.extends';
@@ -247,8 +247,7 @@ export class DexieService<T extends object = any> {
      * @param table table name
      */
     valueChanges<TKey extends keyof T>(table: TKey): Observable<T[TKey][]> {
-        return this.onChanges(table).pipe(
-            startWith(),
+        return merge(of(), this.onChanges(table)).pipe(
             mergeMap(() => this.toArray(table))
         );
     }
