@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { DexieDatabase } from './dexie.database';
+import { from, bindCallback, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Dexie } from 'dexie';
-import { from } from 'rxjs';
+
+import { DatabaseChange } from './dexie.extends';
+import { DexieDatabase } from './dexie.database';
 
 @Injectable()
 export class DexieService<T extends object = any> {
@@ -223,6 +226,15 @@ export class DexieService<T extends object = any> {
      */
     update<TKey extends keyof T>(table: TKey, key: any, changes: T[TKey]) {
         return from(this.db.table(String(table)).update(key, changes));
+    }
+
+    onChanges(): Observable<DatabaseChange<any>[]>
+    onChanges<TKey extends keyof T>(table: TKey): Observable<DatabaseChange<T[TKey]>[]>
+    onChanges<TKey extends keyof T>(table?: TKey): Observable<DatabaseChange<T[TKey]>[]> {
+        const onChange = (cb: (changes: DatabaseChange<T[TKey]>[]) => void) => this.db.on('changes', cb);
+        return bindCallback(onChange)().pipe(
+            map(changes => changes.filter(x => !table || x.table === table))
+        );
     }
 
 }
