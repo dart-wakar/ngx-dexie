@@ -1,6 +1,9 @@
-# ngx-dexie
+# ngx-dexie-observable
 
 Dexie module for Angular 2.0+ projects
+
+This is a fork of [ngx-dexie](https://github.com/dart-wakar/ngx-dexie) with rxjs observable implementation
+
 
 ## Install
 
@@ -44,8 +47,8 @@ export class AppModule { }
 The ```DexieModule``` provides now a configured Dexie db instance and a Dexie db service,i.e. ```DexieService``` which can be injected anywhere inside the ```AppModule```.
 
 ```ts
-import {Injectable} from '@angular/core';
-import {DexieService} from 'ngx-dexie';
+import { Injectable } from '@angular/core';
+import { DexieService } from 'ngx-dexie';
 
 @Injectable()
 export class IndexedDbService {

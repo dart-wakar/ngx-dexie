@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {DexieDatabase} from './dexie.database';
+import { Injectable } from '@angular/core';
+import { DexieDatabase } from './dexie.database';
 
 @Injectable()
 export class DexieService {

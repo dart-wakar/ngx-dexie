@@ -1,8 +1,8 @@
-import {NgModule,ModuleWithProviders,InjectionToken} from '@angular/core';
+import { NgModule, ModuleWithProviders, InjectionToken } from '@angular/core';
 
-import {DexieDatabase} from './dexie.database';
-import {DexieService} from './dexie.service';
-import {DexieConfig} from './dexieConfig';
+import { DexieDatabase } from './dexie.database';
+import { DexieService } from './dexie.service';
+import { DexieConfig } from './dexieConfig';
 
 export function DexieFactory(config: DexieConfig) {
     return new DexieDatabase(config);
