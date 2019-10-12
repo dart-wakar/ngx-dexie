@@ -247,7 +247,7 @@ export class DexieService<T extends object = any> {
      * @param table table name
      */
     valueChanges<TKey extends keyof T>(table: TKey): Observable<T[TKey][]> {
-        return merge(of(), this.onChanges(table)).pipe(
+        return merge(of(null), this.onChanges(table)).pipe(
             mergeMap(() => this.toArray(table))
         );
     }
