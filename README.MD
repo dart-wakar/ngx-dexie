@@ -7,7 +7,7 @@ This is a fork of [ngx-dexie](https://github.com/dart-wakar/ngx-dexie) with rxjs
 
 ## Install
 
-``` npm install ngx-dexie --save ```
+``` npm install ngx-dexie-observable --save ```
 
 ## How to use
 

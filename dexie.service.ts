@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, bindCallback, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mergeMap, startWith } from 'rxjs/operators';
 import { Dexie } from 'dexie';
 
 import { DatabaseChange } from './dexie.extends';
@@ -19,7 +19,7 @@ export class DexieService<T extends object = any> {
      * @param object object to add
      */
     addOne<TKey extends keyof T>(table: TKey, object: T[TKey]) {
-        return from(this.db.table(String(table)).add(object));
+        return from(this.db.table<T[TKey]>(String(table)).add(object));
     }
 
     /**
@@ -30,7 +30,7 @@ export class DexieService<T extends object = any> {
      * @param objects objects to add
      */
     addMultiple<TKey extends keyof T>(table: TKey, objects: T[TKey][]) {
-        return from(this.db.table(String(table)).bulkAdd(objects));
+        return from(this.db.table<T[TKey]>(String(table)).bulkAdd(objects));
     }
 
     /**
@@ -39,7 +39,7 @@ export class DexieService<T extends object = any> {
      * @param table table name
      */
     count<TKey extends keyof T>(table: TKey) {
-        return from(this.db.table(String(table)).count());
+        return from(this.db.table<T[TKey]>(String(table)).count());
     }
 
     /**
@@ -51,9 +51,9 @@ export class DexieService<T extends object = any> {
      */
     addOrUpdateOne<TKey extends keyof T>(table: TKey, object: T[TKey], key?: any) {
         if(key) {
-            return from(this.db.table(String(table)).put(object, key));
+            return from(this.db.table<T[TKey]>(String(table)).put(object, key));
         } else {
-            return from(this.db.table(String(table)).put(object));
+            return from(this.db.table<T[TKey]>(String(table)).put(object));
         }
     }
 
@@ -66,9 +66,9 @@ export class DexieService<T extends object = any> {
      */
     addOrUpdateMultiple<TKey extends keyof T>(table: TKey, objects: T[TKey][], keys?: any) {
         if(keys) {
-            return from(this.db.table(String(table)).bulkPut(objects, keys));
+            return from(this.db.table<T[TKey]>(String(table)).bulkPut(objects, keys));
         } else {
-            return from(this.db.table(String(table)).bulkPut(objects));
+            return from(this.db.table<T[TKey]>(String(table)).bulkPut(objects));
         }
     }
 
@@ -79,7 +79,7 @@ export class DexieService<T extends object = any> {
      * @param primaryKey 
      */
     deleteOne<TKey extends keyof T>(table: TKey, primaryKey: any) {
-        return from(this.db.table(String(table)).delete(primaryKey));
+        return from(this.db.table<T[TKey]>(String(table)).delete(primaryKey));
     }
 
     /**
@@ -89,7 +89,7 @@ export class DexieService<T extends object = any> {
      * @param primaryKeys 
      */
     deleteMultiple<TKey extends keyof T>(table: TKey, primaryKeys: any[]) {
-        return from(this.db.table(String(table)).bulkDelete(primaryKeys));
+        return from(this.db.table<T[TKey]>(String(table)).bulkDelete(primaryKeys));
     }
 
     /**
@@ -98,7 +98,7 @@ export class DexieService<T extends object = any> {
      * @param table table name
      */
     clearAll<TKey extends keyof T>(table: TKey) {
-        return from(this.db.table(String(table)).clear());
+        return from(this.db.table<T[TKey]>(String(table)).clear());
     }
 
     // check
@@ -109,7 +109,7 @@ export class DexieService<T extends object = any> {
      * @param callback 
      */
     operateOnEach<TKey extends keyof T>(table: TKey, callback: (item: T[TKey], idbCursor: any) => any) {
-        return from(this.db.table(String(table)).each(callback));
+        return from(this.db.table<T[TKey]>(String(table)).each(callback));
     }
 
     /**
@@ -119,7 +119,7 @@ export class DexieService<T extends object = any> {
      * @param filterFunction 
      */
     filter<TKey extends keyof T>(table: TKey, filterFunction: (value: T[TKey]) => boolean) {
-        return this.db.table(String(table)).filter(filterFunction) as Dexie.Collection<T[TKey], TKey>;
+        return this.db.table<T[TKey]>(String(table)).filter(filterFunction) as Dexie.Collection<T[TKey], TKey>;
     }
 
     // check
@@ -132,9 +132,9 @@ export class DexieService<T extends object = any> {
      */
     getByPrimaryKey<TKey extends keyof T>(table: TKey, primaryKey: any, callback?: (item: T[TKey]) => any) {
         if(callback) {
-            return from(this.db.table(String(table)).get(primaryKey, callback));
+            return from(this.db.table<T[TKey]>(String(table)).get(primaryKey, callback));
         } else {
-            return from(this.db.table(String(table)).get(primaryKey));
+            return from(this.db.table<T[TKey]>(String(table)).get(primaryKey));
         }
     }
 
@@ -148,9 +148,9 @@ export class DexieService<T extends object = any> {
      */
     getByKeyToValueMap<TKey extends keyof T>(table: TKey, keyValueMap: Object, callback?: (item: T[TKey]) => any) {
         if(callback) {
-            return from(this.db.table(String(table)).get(keyValueMap, callback));
+            return from(this.db.table<T[TKey]>(String(table)).get(keyValueMap, callback));
         } else {
-            return from(this.db.table(String(table)).get(keyValueMap));
+            return from(this.db.table<T[TKey]>(String(table)).get(keyValueMap));
         }
     }
 
@@ -161,7 +161,7 @@ export class DexieService<T extends object = any> {
      * @param num 
      */
     getFirstNItemsOfTable<TKey extends keyof T>(table: TKey, num: number) {
-        return this.db.table(String(table)).limit(num) as Dexie.Collection<T[TKey], TKey>;
+        return this.db.table<T[TKey]>(String(table)).limit(num) as Dexie.Collection<T[TKey], TKey>;
     }
 
     /**
@@ -171,7 +171,7 @@ export class DexieService<T extends object = any> {
      * @param index 
      */
     orderBy<TKey extends keyof T>(table: TKey, index: string) {
-        return this.db.table(String(table)).orderBy(index) as Dexie.Collection<T[TKey], TKey>;
+        return this.db.table<T[TKey]>(String(table)).orderBy(index) as Dexie.Collection<T[TKey], TKey>;
     }
 
     /**
@@ -181,7 +181,7 @@ export class DexieService<T extends object = any> {
      * @param ignoreUpto 
      */
     offset<TKey extends keyof T>(table: TKey, ignoreUpto: number) {
-        return this.db.table(String(table)).offset(ignoreUpto) as Dexie.Collection<T[TKey], TKey>;
+        return this.db.table<T[TKey]>(String(table)).offset(ignoreUpto) as Dexie.Collection<T[TKey], TKey>;
     }
 
     /**
@@ -190,7 +190,7 @@ export class DexieService<T extends object = any> {
      * @param table table name
      */
     reverse<TKey extends keyof T>(table: TKey) {
-        return this.db.table(String(table)).reverse() as Dexie.Collection<T[TKey], TKey>;
+        return this.db.table<T[TKey]>(String(table)).reverse() as Dexie.Collection<T[TKey], TKey>;
     }
 
     /**
@@ -199,11 +199,12 @@ export class DexieService<T extends object = any> {
      * @param table table name
      * @param callback 
      */
+    toArray<TKey extends keyof T>(table: TKey): Observable<T[TKey][]>
     toArray<TKey extends keyof T>(table: TKey, callback?: (objects: T[TKey][]) => any) {
         if(callback) {
-            return from(this.db.table(String(table)).toArray(callback));
+            return from(this.db.table<T[TKey]>(String(table)).toArray(callback));
         } else {
-            return from(this.db.table(String(table)).toArray());
+            return from(this.db.table<T[TKey]>(String(table)).toArray());
         }
     }
 
@@ -213,7 +214,7 @@ export class DexieService<T extends object = any> {
      * @param table table name
      */
     toCollection<TKey extends keyof T>(table: TKey) {
-        return this.db.table(String(table)).toCollection() as Dexie.Collection<T[TKey], TKey>;
+        return this.db.table<T[TKey]>(String(table)).toCollection() as Dexie.Collection<T[TKey], TKey>;
     }
 
     // check
@@ -225,15 +226,30 @@ export class DexieService<T extends object = any> {
      * @param changes 
      */
     update<TKey extends keyof T>(table: TKey, key: any, changes: T[TKey]) {
-        return from(this.db.table(String(table)).update(key, changes));
+        return from(this.db.table<T[TKey]>(String(table)).update(key, changes));
     }
 
-    onChanges(): Observable<DatabaseChange<any>[]>
-    onChanges<TKey extends keyof T>(table: TKey): Observable<DatabaseChange<T[TKey]>[]>
+    /**
+     * List to database change events
+     * 
+     * @param table table name or empty to listen to all tables
+     */
     onChanges<TKey extends keyof T>(table?: TKey): Observable<DatabaseChange<T[TKey]>[]> {
-        const onChange = (cb: (changes: DatabaseChange<T[TKey]>[]) => void) => this.db.on('changes', cb);
-        return bindCallback(onChange)().pipe(
-            map(changes => changes.filter(x => !table || x.table === table))
+        return bindCallback(this.db.on)('changes').pipe(
+            map(data => data[0]),
+            map((changes: DatabaseChange<T[TKey]>[]) => changes.filter(x => !table || x.table === table))
+        );
+    }
+
+    /**
+     * Return a observable that emits the current values on every data change
+     * 
+     * @param table table name
+     */
+    valueChanges<TKey extends keyof T>(table: TKey): Observable<T[TKey][]> {
+        return this.onChanges(table).pipe(
+            startWith(),
+            mergeMap(() => this.toArray(table))
         );
     }
 
