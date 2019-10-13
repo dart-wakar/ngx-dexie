@@ -3,6 +3,7 @@ import {
     IUpdateChange,
     IDeleteChange
 } from 'dexie-observable/api';
+
 export { DatabaseChangeType } from 'dexie-observable/api';
 
 export interface CreateChange<T> extends ICreateChange {
