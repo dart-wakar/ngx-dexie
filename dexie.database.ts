@@ -1,8 +1,9 @@
-import {Injectable,EventEmitter,Inject} from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import Dexie from 'dexie';
+import 'dexie-observable';
 
-import {DexieConfig} from './dexieConfig';
-import {DEXIE_CONFIG_TOKEN} from './dexie.module';
+import { DexieConfig } from './dexieConfig';
+import { DEXIE_CONFIG_TOKEN } from './dexie.module';
 
 @Injectable()
 export class DexieDatabase extends Dexie {

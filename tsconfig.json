@@ -7,7 +7,7 @@
             "dom"
         ],
         "moduleResolution": "node",
-        "declaration": false,
+        "declaration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "sourceMap": true,
