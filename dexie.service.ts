@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { from, Observable, merge, of, fromEventPattern } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import { from, Observable, merge, of, fromEventPattern } from 'rxjs';
 import { Dexie } from 'dexie';
 
 import { DatabaseChange } from './dexie.extends';
@@ -199,8 +199,7 @@ export class DexieService<T extends object = any> {
      * @param table table name
      * @param callback 
      */
-    toArray<TKey extends keyof T>(table: TKey): Observable<T[TKey][]>
-    toArray<TKey extends keyof T>(table: TKey, callback?: (objects: T[TKey][]) => any) {
+    toArray<TKey extends keyof T>(table: TKey, callback?: (objects: T[TKey][]) => any): Observable<T[TKey][]> {
         if(callback) {
             return from(this.db.table<T[TKey]>(String(table)).toArray(callback));
         } else {
