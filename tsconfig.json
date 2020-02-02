@@ -10,9 +10,9 @@
         "declaration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "sourceMap": false,
+        "sourceMap": true,
         "noImplicitAny": true,
-        "outDir": "./dist",
+        "outDir": "./",
         "typeRoots": [
             "node_modules/@types"
         ]
